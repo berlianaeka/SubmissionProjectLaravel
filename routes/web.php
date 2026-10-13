@@ -1,59 +1,21 @@
 <?php
 
+use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
 
+// Halaman utama
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/halo', function () {
-    return 'Halo, selamat datang di Laravel 13!';
-});
+// Latihan 1: Profil mahasiswa
+Route::get('/profil', [MahasiswaController::class, 'profil'])
+    ->name('mahasiswa.profil');
 
-Route::get('/waktu', fn () => now()->format('d-m-Y H:i:s'));
+// Latihan 2: Daftar mahasiswa
+Route::get('/mahasiswa', [MahasiswaController::class, 'daftar'])
+    ->name('mahasiswa.daftar');
 
-// Parameter wajib
-Route::get('/profil/{nama}', function (string $nama) {
-    return "Halo, {$nama}!";
-});
-
-// Parameter opsional
-Route::get('/kategori/{nama?}', function (?string $nama = 'semua') {
-    return "Menampilkan kategori: {$nama}";
-});
-
-// Lebih dari satu parameter
-Route::get('/kelas/{kode}/mahasiswa/{nim}', function (string $kode, string $nim) {
-    return "Kelas {$kode}, NIM {$nim}";
-});
-
-// Lebih dari satu parameter
-
-Route::get('/kelas/{kode}/mahasiswa/{nim}', function (string $kode, string $nim) {
-    return "Kelas {$kode}, NIM {$nim}";
-});
-
-// Pembatasan parameter / Constraint
-
-Route::get('/artikel/{id}', function (int $id) {
-    return "Artikel nomor {$id}";
-})->whereNumber('id');
-
-Route::get('/pengguna/{username}', function (string $username) {
-    return "Pengguna: {$username}";
-})->whereAlpha('username');
-
-Route::get('/kode/{kode}', function (string $kode) {
-    return "Kode: {$kode}";
-})->where('kode', '[A-Z]{3}[0-9]{2}');
-
-// Redirect
-
-Route::redirect('/beranda', '/');
-
-// Fallback
-// Harus diletakkan paling terakhir
-
-Route::fallback(function () {
-    return response('Halaman tidak ditemukan (kustom).', 404);
-});
+// Latihan 3: Detail mahasiswa
+Route::get('/mahasiswa/{nim}', [MahasiswaController::class, 'detail'])
+    ->name('mahasiswa.detail');
